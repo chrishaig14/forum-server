@@ -41,24 +41,21 @@ describe('create user', () => {
 
 describe('create question', () => {
 
-    let newQuestion;
-    let questionId;
     let username = 'user';
+    let newQuestion = {title: 'Question title', body: 'Question body', username: username};
+    let questionId;
 
     beforeAll(async () => {
-        newQuestion = {title: 'Question title', body: 'Question body', username: username};
         questionId = await logic.newQuestion(newQuestion);
     });
-    test('get created question returns same question', async done => {
+    test('get created question returns same question', async () => {
         let question = await logic.getQuestion(questionId);
         expect(question).toMatchObject(newQuestion);
-        done();
     });
 
-    test('adds question id to users question list', async done => {
+    test('adds question id to users question list', async () => {
         let userQuestions = await logic.getUserQuestions(username);
         expect(userQuestions).toContain(questionId);
-        done();
     });
 });
 

@@ -132,22 +132,20 @@ describe('create user', function () {
     }); });
 });
 describe('create question', function () {
-    var newQuestion;
-    var questionId;
     var username = 'user';
+    var newQuestion = { title: 'Question title', body: 'Question body', username: username };
+    var questionId;
     beforeAll(function () { return __awaiter(_this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    newQuestion = { title: 'Question title', body: 'Question body', username: username };
-                    return [4 /*yield*/, logic.newQuestion(newQuestion)];
+                case 0: return [4 /*yield*/, logic.newQuestion(newQuestion)];
                 case 1:
                     questionId = _a.sent();
                     return [2 /*return*/];
             }
         });
     }); });
-    test('get created question returns same question', function (done) { return __awaiter(_this, void 0, void 0, function () {
+    test('get created question returns same question', function () { return __awaiter(_this, void 0, void 0, function () {
         var question;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -155,12 +153,11 @@ describe('create question', function () {
                 case 1:
                     question = _a.sent();
                     expect(question).toMatchObject(newQuestion);
-                    done();
                     return [2 /*return*/];
             }
         });
     }); });
-    test('adds question id to users question list', function (done) { return __awaiter(_this, void 0, void 0, function () {
+    test('adds question id to users question list', function () { return __awaiter(_this, void 0, void 0, function () {
         var userQuestions;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -168,7 +165,6 @@ describe('create question', function () {
                 case 1:
                     userQuestions = _a.sent();
                     expect(userQuestions).toContain(questionId);
-                    done();
                     return [2 /*return*/];
             }
         });
