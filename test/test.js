@@ -191,8 +191,8 @@ describe('create question', function () {
     }); });
 });
 describe('answer question ', function () {
-    var answerId;
     var questionId;
+    var answerId;
     var username = 'user';
     var newAnswer = { body: 'Answer body', username: username };
     beforeAll(function () { return __awaiter(_this, void 0, void 0, function () {
