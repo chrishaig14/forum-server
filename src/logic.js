@@ -48,6 +48,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongodb_1 = require("mongodb");
+var dbClient;
 function connectToDb(url, dbName) {
     return __awaiter(this, void 0, void 0, function () {
         var promise;
@@ -60,6 +61,7 @@ function connectToDb(url, dbName) {
                     console.log('Connected successfully to server');
                     exports.db = client.db(dbName);
                     resolve();
+                    dbClient = client;
                     // client.close();
                 });
             });
@@ -68,6 +70,19 @@ function connectToDb(url, dbName) {
     });
 }
 exports.connectToDb = connectToDb;
+function closeConnectionToDb() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, dbClient.close()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.closeConnectionToDb = closeConnectionToDb;
 exports.getAnswer = function (answerId) { return __awaiter(_this, void 0, void 0, function () {
     var answer;
     return __generator(this, function (_a) {

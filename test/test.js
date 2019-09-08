@@ -59,6 +59,9 @@ afterAll(function () { return __awaiter(_this, void 0, void 0, function () {
             case 0: return [4 /*yield*/, logic.db.dropDatabase()];
             case 1:
                 _a.sent();
+                return [4 /*yield*/, logic.closeConnectionToDb()];
+            case 2:
+                _a.sent();
                 return [2 /*return*/];
         }
     });

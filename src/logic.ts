@@ -1,6 +1,7 @@
 import {Db, MongoClient} from 'mongodb';
 
 export let db: Db;
+let dbClient: MongoClient;
 
 export async function connectToDb(url: string, dbName: string) {
     let promise = new Promise((resolve, reject) => {
@@ -11,11 +12,16 @@ export async function connectToDb(url: string, dbName: string) {
                 console.log('Connected successfully to server');
                 db = client.db(dbName);
                 resolve();
+                dbClient = client;
                 // client.close();
             });
         }
     );
     return promise;
+}
+
+export async function closeConnectionToDb() {
+    await dbClient.close();
 }
 
 export const getAnswer = async answerId => {

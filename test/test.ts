@@ -12,6 +12,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
     await logic.db.dropDatabase();
+    await logic.closeConnectionToDb();
 });
 
 describe('create user', () => {
