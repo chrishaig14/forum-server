@@ -69,8 +69,14 @@ function connectToDb(url, dbName) {
 }
 exports.connectToDb = connectToDb;
 exports.getAnswer = function (answerId) { return __awaiter(_this, void 0, void 0, function () {
+    var answer;
     return __generator(this, function (_a) {
-        return [2 /*return*/];
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, exports.db.collection('answers').findOne({ id: answerId })];
+            case 1:
+                answer = _a.sent();
+                return [2 /*return*/, answer];
+        }
     });
 }); };
 exports.getUserAnswers = function (username) { return __awaiter(_this, void 0, void 0, function () {
@@ -138,7 +144,7 @@ exports.newAnswer = function (questionId, answer) { return __awaiter(_this, void
             case 0: return [4 /*yield*/, exports.db.collection('counters').findOne({ name: 'answerId' })];
             case 1:
                 value = (_a.sent()).value;
-                return [4 /*yield*/, exports.db.collection('questions').insertOne(__assign({}, answer, { id: value }))];
+                return [4 /*yield*/, exports.db.collection('answers').insertOne(__assign({}, answer, { id: value }))];
             case 2:
                 _a.sent();
                 return [4 /*yield*/, exports.db.collection('users').updateOne({ username: answer.username }, { $push: { 'answers': value } })];
