@@ -95,7 +95,7 @@ app.get('/questions/:id', function (request, response) { return __awaiter(_this,
             case 1:
                 question = _a.sent();
                 if (question) {
-                    response.status(200).json(question).end();
+                    response.status(200).json({ question: question }).end();
                 }
                 else {
                     response.status(404).end();

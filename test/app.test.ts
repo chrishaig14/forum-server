@@ -80,7 +80,7 @@ describe('create question', () => {
             .expect(200, done)
             .expect(response => {
                 console.log('RESPONSE_body: ', response.body);
-                expect(response.body).toMatchObject({...newQuestion, id: questionId});
+                expect(response.body).toMatchObject({question: {...newQuestion, id: questionId}});
             }, done);
     });
 });
