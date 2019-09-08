@@ -63,8 +63,9 @@ describe('create question', () => {
 });
 
 describe('answer question ', () => {
-        let answerId;
     let questionId;
+        let answerId;
+
         let username = 'user';
         let newAnswer = {body: 'Answer body', username: username};
 
