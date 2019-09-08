@@ -105,20 +105,17 @@ exports.getUserAnswers = function (username) { return __awaiter(_this, void 0, v
         }
     });
 }); };
-function getAnswers(questionId) {
-    return __awaiter(this, void 0, void 0, function () {
-        var answers;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, exports.db.collection('questions').findOne({ id: questionId }, { projection: { answers: 1, _id: 0 } })];
-                case 1:
-                    answers = (_a.sent()).answers;
-                    return [2 /*return*/, answers];
-            }
-        });
+exports.getAnswers = function (questionId) { return __awaiter(_this, void 0, void 0, function () {
+    var answers;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, exports.db.collection('questions').findOne({ id: questionId }, { projection: { answers: 1, _id: 0 } })];
+            case 1:
+                answers = (_a.sent()).answers;
+                return [2 /*return*/, answers];
+        }
     });
-}
-exports.getAnswers = getAnswers;
+}); };
 exports.newQuestion = function (question) { return __awaiter(_this, void 0, void 0, function () {
     var value;
     return __generator(this, function (_a) {

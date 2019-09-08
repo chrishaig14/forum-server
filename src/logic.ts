@@ -24,22 +24,22 @@ export async function closeConnectionToDb() {
     await dbClient.close();
 }
 
-export const getAnswer = async answerId => {
-    let answer = await db.collection('answers').findOne({id: answerId});
+export const getAnswer = async (answerId: number): Promise<any> => {
+    let answer: any = await db.collection('answers').findOne({id: answerId});
     return answer;
 };
 
-export const getUserAnswers = async username => {
+export const getUserAnswers = async (username: string): Promise<any[]> => {
     let {answers} = await db.collection('users').findOne({username}, {projection: {answers: 1, _id: 0}});
     return answers;
 };
 
-export async function getAnswers(questionId) {
+export const getAnswers = async (questionId: number): Promise<any[]> => {
     let {answers} = await db.collection('questions').findOne({id: questionId}, {projection: {answers: 1, _id: 0}});
     return answers;
-}
+};
 
-export const newQuestion = async (question) => {
+export const newQuestion = async (question: any): Promise<number> => {
     let {value} = await db.collection('counters').findOne({name: 'questionId'});
     await db.collection('questions').insertOne({...question, id: value, answers: []});
     await db.collection('users').updateOne({username: question.username}, {$push: {'questions': value}});
@@ -47,17 +47,17 @@ export const newQuestion = async (question) => {
     return value;
 };
 
-export const getQuestion = async (questionId) => {
+export const getQuestion = async (questionId: number): Promise<any> => {
     let question = await db.collection('questions').findOne({id: questionId});
     return question;
 };
 
-export const getUserQuestions = async (username) => {
+export const getUserQuestions = async (username: string): Promise<any[]> => {
     let {questions} = await db.collection('users').findOne({username}, {projection: {questions: 1, _id: 0}});
     return questions;
 };
 
-export const newAnswer = async (questionId, answer) => {
+export const newAnswer = async (questionId: number, answer: any): Promise<number> => {
     let {value} = await db.collection('counters').findOne({name: 'answerId'});
     await db.collection('answers').insertOne({...answer, id: value, questionId});
     await db.collection('questions').updateOne({id: questionId}, {$push: {'answers': value}});
@@ -66,11 +66,11 @@ export const newAnswer = async (questionId, answer) => {
     return value;
 };
 
-export const createUser = async (user) => {
+export const createUser = async (user: any): Promise<void> => {
     await db.collection('users').insertOne({...user, questions: [], answers: []});
 };
 
-export const match = async (username, password) => {
+export const match = async (username: string, password: string): Promise<any> => {
     let result = await db.collection('users').findOne({username, password});
     return result;
 };
