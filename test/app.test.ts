@@ -54,3 +54,33 @@ describe('create user', () => {
             .expect(401, done);
     });
 });
+
+describe('create question', () => {
+
+    let username = 'user';
+    let newQuestion = {title: 'Question title', body: 'Question body'};
+    let questionId;
+
+    test('returns question id', async (done) => {
+        request(app)
+            .post('/questions')
+            .send({token: username, payload: newQuestion})
+            .expect(200, done)
+            .expect(response => {
+                expect(response.body).toHaveProperty('questionId');
+                questionId = response.body.questionId;
+                expect(questionId).toBe('0');
+            }, done);
+    });
+
+    test('get question returns same question', async (done) => {
+        request(app)
+            .get('/questions/' + questionId)
+            .send({token: username})
+            .expect(200, done)
+            .expect(response => {
+                console.log('RESPONSE_body: ', response.body);
+                expect(response.body).toMatchObject({...newQuestion, id: questionId});
+            }, done);
+    });
+});

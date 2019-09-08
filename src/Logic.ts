@@ -1,18 +1,18 @@
 interface Logic {
 
-    getAnswer: (answerId: number) => Promise<any>
+    getAnswer: (answerId: string) => Promise<any>
 
     getUserAnswers: (username: string) => Promise<any[]>
 
-    getAnswers: (questionId: number) => Promise<any[]>
+    getAnswers: (questionId: string) => Promise<any[]>
 
-    newQuestion: (question: any) => Promise<number>
+    newQuestion: (question: any) => Promise<string>
 
-    getQuestion: (questionId: number) => Promise<any>
+    getQuestion: (questionId: string) => Promise<any>
 
     getUserQuestions: (username: string) => Promise<any[]>
 
-    newAnswer: (questionId: number, answer: any) => Promise<number>
+    newAnswer: (questionId: string, answer: any) => Promise<string>
 
     createUser: (user: any) => Promise<void>
 

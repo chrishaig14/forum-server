@@ -71,6 +71,39 @@ app.post('/login', function (request, response) { return __awaiter(_this, void 0
         }
     });
 }); });
+app.post('/questions', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var newQuestion, questionId;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                newQuestion = request.body.payload;
+                return [4 /*yield*/, logic.newQuestion(newQuestion)];
+            case 1:
+                questionId = _a.sent();
+                response.status(200).json({ questionId: questionId }).end();
+                return [2 /*return*/];
+        }
+    });
+}); });
+app.get('/questions/:id', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var id, question;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = request.params.id;
+                return [4 /*yield*/, logic.getQuestion(id)];
+            case 1:
+                question = _a.sent();
+                if (question) {
+                    response.status(200).json(question).end();
+                }
+                else {
+                    response.status(404).end();
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
 module.exports = {
     app: app.listen(8000), setLogic: function (l) {
         logic = l;

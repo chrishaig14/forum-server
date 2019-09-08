@@ -23,6 +23,22 @@ app.post('/login', async (request, response) => {
     }
 });
 
+app.post('/questions', async (request, response) => {
+    const newQuestion = request.body.payload;
+    let questionId = await logic.newQuestion(newQuestion);
+    response.status(200).json({questionId}).end();
+});
+
+app.get('/questions/:id', async (request, response) => {
+    const id = request.params.id;
+    let question = await logic.getQuestion(id);
+    if (question) {
+        response.status(200).json(question).end();
+    } else {
+        response.status(404).end();
+    }
+});
+
 module.exports = {
     app: app.listen(8000), setLogic: (l: Logic) => {
         logic = l;

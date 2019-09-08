@@ -39,15 +39,16 @@ export const getAnswers = async (questionId: number): Promise<any[]> => {
     return answers;
 };
 
-export const newQuestion = async (question: any): Promise<number> => {
+export const newQuestion = async (question: any): Promise<string> => {
     let {value} = await db.collection('counters').findOne({name: 'questionId'});
-    await db.collection('questions').insertOne({...question, id: value, answers: []});
-    await db.collection('users').updateOne({username: question.username}, {$push: {'questions': value}});
+    const questionId = value.toString();
+    await db.collection('questions').insertOne({...question, id: questionId, answers: []});
+    await db.collection('users').updateOne({username: question.username}, {$push: {'questions': questionId}});
     await db.collection('counters').updateOne({name: 'questionId'}, {$set: {'value': value + 1}});
-    return value;
+    return questionId;
 };
 
-export const getQuestion = async (questionId: number): Promise<any> => {
+export const getQuestion = async (questionId: string): Promise<any> => {
     let question = await db.collection('questions').findOne({id: questionId});
     return question;
 };
@@ -57,13 +58,14 @@ export const getUserQuestions = async (username: string): Promise<any[]> => {
     return questions;
 };
 
-export const newAnswer = async (questionId: number, answer: any): Promise<number> => {
+export const newAnswer = async (questionId: string, answer: any): Promise<string> => {
     let {value} = await db.collection('counters').findOne({name: 'answerId'});
-    await db.collection('answers').insertOne({...answer, id: value, questionId});
-    await db.collection('questions').updateOne({id: questionId}, {$push: {'answers': value}});
-    await db.collection('users').updateOne({username: answer.username}, {$push: {'answers': value}});
+    const answerId = value.toString();
+    await db.collection('answers').insertOne({...answer, id: answerId, questionId});
+    await db.collection('questions').updateOne({id: questionId}, {$push: {'answers': answerId}});
+    await db.collection('users').updateOne({username: answer.username}, {$push: {'answers': answerId}});
     await db.collection('counters').updateOne({name: 'answerId'}, {$set: {'value': value + 1}});
-    return value;
+    return answerId;
 };
 
 export const createUser = async (user: any): Promise<void> => {
