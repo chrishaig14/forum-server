@@ -75,9 +75,9 @@ describe('answer question ', () => {
             answerId = await logic.newAnswer(questionId, newAnswer);
         });
 
-        test('get answer returns same answer', async () => {
+    test('get answer returns same answer with question id', async () => {
             let answer = await logic.getAnswer(answerId);
-            expect(answer).toMatchObject(newAnswer);
+        expect(answer).toMatchObject({...newAnswer, questionId});
         });
 
         test('adds answer to question\'s answers', async () => {
