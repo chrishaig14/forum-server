@@ -67,7 +67,7 @@ export const newAnswer = async (questionId, answer) => {
 };
 
 export const createUser = async (user) => {
-    await db.collection('users').insertOne({...user, questions: [], answers: []);
+    await db.collection('users').insertOne({...user, questions: [], answers: []});
 };
 
 export const match = async (username, password) => {
