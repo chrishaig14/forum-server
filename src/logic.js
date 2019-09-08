@@ -68,15 +68,27 @@ function connectToDb(url, dbName) {
     });
 }
 exports.connectToDb = connectToDb;
-function getAnswer(answerId) {
-}
-exports.getAnswer = getAnswer;
-function getUserAnswers(username) {
-}
-exports.getUserAnswers = getUserAnswers;
-function getAnswers(questionId) {
-}
-exports.getAnswers = getAnswers;
+exports.getAnswer = function (answerId) { return __awaiter(_this, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/];
+    });
+}); };
+exports.getUserAnswers = function (username) { return __awaiter(_this, void 0, void 0, function () {
+    var answers;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, exports.db.collection('users').findOne({ username: username }, { projection: { answers: 1, _id: 0 } })];
+            case 1:
+                answers = (_a.sent()).answers;
+                return [2 /*return*/, answers];
+        }
+    });
+}); };
+exports.getAnswers = function (questionId) { return __awaiter(_this, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/];
+    });
+}); };
 exports.newQuestion = function (question) { return __awaiter(_this, void 0, void 0, function () {
     var value;
     return __generator(this, function (_a) {

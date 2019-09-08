@@ -18,17 +18,18 @@ export async function connectToDb(url: string, dbName: string) {
     return promise;
 }
 
-export function getAnswer(answerId) {
+export const getAnswer = async answerId => {
 
-}
+};
 
-export function getUserAnswers(username) {
+export const getUserAnswers = async username => {
+    let {answers} = await db.collection('users').findOne({username}, {projection: {answers: 1, _id: 0}});
+    return answers;
+};
 
-}
+export const getAnswers = async questionId => {
 
-export function getAnswers(questionId) {
-
-}
+};
 
 export const newQuestion = async (question) => {
     let {value} = await db.collection('counters').findOne({name: 'questionId'});
