@@ -109,8 +109,14 @@ exports.getQuestion = function (questionId) { return __awaiter(_this, void 0, vo
     });
 }); };
 exports.getUserQuestions = function (username) { return __awaiter(_this, void 0, void 0, function () {
+    var questions;
     return __generator(this, function (_a) {
-        return [2 /*return*/];
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, exports.db.collection('users').findOne({ username: username }, { projection: { questions: 1, _id: 0 } })];
+            case 1:
+                questions = (_a.sent()).questions;
+                return [2 /*return*/, questions];
+        }
     });
 }); };
 exports.newAnswer = function (questionId, answer) { return __awaiter(_this, void 0, void 0, function () {

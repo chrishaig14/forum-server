@@ -44,7 +44,8 @@ export const getQuestion = async (questionId) => {
 };
 
 export const getUserQuestions = async (username) => {
-
+    let {questions} = await db.collection('users').findOne({username}, {projection: {questions: 1, _id: 0}});
+    return questions;
 };
 
 export const newAnswer = async (questionId, answer) => {
