@@ -178,14 +178,20 @@ describe('create question', function () {
 });
 describe('answer question ', function () {
     var answerId;
-    var questionId = 0;
+    var questionId;
     var username = 'user';
     var newAnswer = { body: 'Answer body', username: username };
     beforeAll(function () { return __awaiter(_this, void 0, void 0, function () {
+        var newQuestion;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, logic.newAnswer(questionId, newAnswer)];
+                case 0:
+                    newQuestion = { title: 'Question title', body: 'Question body', username: username };
+                    return [4 /*yield*/, logic.newQuestion(newQuestion)];
                 case 1:
+                    questionId = _a.sent();
+                    return [4 /*yield*/, logic.newAnswer(questionId, newAnswer)];
+                case 2:
                     answerId = _a.sent();
                     return [2 /*return*/];
             }
@@ -206,9 +212,13 @@ describe('answer question ', function () {
     test('adds answer to question\'s answers', function () { return __awaiter(_this, void 0, void 0, function () {
         var questionAnswers;
         return __generator(this, function (_a) {
-            questionAnswers = logic.getAnswers(questionId);
-            expect(questionAnswers).toContain(answerId);
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, logic.getAnswers(questionId)];
+                case 1:
+                    questionAnswers = _a.sent();
+                    expect(questionAnswers).toContain(answerId);
+                    return [2 /*return*/];
+            }
         });
     }); });
     test('adds answer to user\'s answers', function () { return __awaiter(_this, void 0, void 0, function () {

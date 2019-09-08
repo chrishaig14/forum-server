@@ -64,11 +64,13 @@ describe('create question', () => {
 
 describe('answer question ', () => {
         let answerId;
-        let questionId = 0;
+    let questionId;
         let username = 'user';
         let newAnswer = {body: 'Answer body', username: username};
 
         beforeAll(async () => {
+            let newQuestion = {title: 'Question title', body: 'Question body', username: username};
+            questionId = await logic.newQuestion(newQuestion);
             answerId = await logic.newAnswer(questionId, newAnswer);
         });
 
@@ -78,7 +80,7 @@ describe('answer question ', () => {
         });
 
         test('adds answer to question\'s answers', async () => {
-            let questionAnswers = logic.getAnswers(questionId);
+            let questionAnswers = await logic.getAnswers(questionId);
             expect(questionAnswers).toContain(answerId);
         });
 

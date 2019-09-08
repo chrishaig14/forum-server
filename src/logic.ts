@@ -28,13 +28,14 @@ export const getUserAnswers = async username => {
     return answers;
 };
 
-export const getAnswers = async questionId => {
-
-};
+export async function getAnswers(questionId) {
+    let {answers} = await db.collection('questions').findOne({id: questionId}, {projection: {answers: 1, _id: 0}});
+    return answers;
+}
 
 export const newQuestion = async (question) => {
     let {value} = await db.collection('counters').findOne({name: 'questionId'});
-    await db.collection('questions').insertOne({...question, id: value});
+    await db.collection('questions').insertOne({...question, id: value, answers: []});
     await db.collection('users').updateOne({username: question.username}, {$push: {'questions': value}});
     await db.collection('counters').updateOne({name: 'questionId'}, {$set: {'value': value + 1}});
     return value;
@@ -52,7 +53,8 @@ export const getUserQuestions = async (username) => {
 
 export const newAnswer = async (questionId, answer) => {
     let {value} = await db.collection('counters').findOne({name: 'answerId'});
-    await db.collection('answers').insertOne({...answer, id: value});
+    await db.collection('answers').insertOne({...answer, id: value, questionId});
+    await db.collection('questions').updateOne({id: questionId}, {$push: {'answers': value}});
     await db.collection('users').updateOne({username: answer.username}, {$push: {'answers': value}});
     await db.collection('counters').updateOne({name: 'answerId'}, {$set: {'value': value + 1}});
     return value;
