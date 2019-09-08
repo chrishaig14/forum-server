@@ -63,31 +63,30 @@ describe('create question', () => {
 });
 
 describe('answer question ', () => {
-        let questionId;
-        let answerId;
+    let questionId;
+    let answerId;
 
-        let username = 'user';
-        let newAnswer = {body: 'Answer body', username: username};
+    let username = 'user';
+    let newAnswer = {body: 'Answer body', username: username};
 
-        beforeAll(async () => {
-            let newQuestion = {title: 'Question title', body: 'Question body', username: username};
-            questionId = await logic.newQuestion(newQuestion);
-            answerId = await logic.newAnswer(questionId, newAnswer);
-        });
+    beforeAll(async () => {
+        let newQuestion = {title: 'Question title', body: 'Question body', username: username};
+        questionId = await logic.newQuestion(newQuestion);
+        answerId = await logic.newAnswer(questionId, newAnswer);
+    });
 
-        test('get answer returns same answer with question id', async () => {
-            let answer = await logic.getAnswer(answerId);
-            expect(answer).toMatchObject({...newAnswer, questionId});
-        });
+    test('get answer returns same answer with question id', async () => {
+        let answer = await logic.getAnswer(answerId);
+        expect(answer).toMatchObject({...newAnswer, questionId});
+    });
 
-        test('adds answer to question\'s answers', async () => {
-            let questionAnswers = await logic.getAnswers(questionId);
-            expect(questionAnswers).toContain(answerId);
-        });
+    test('adds answer to question\'s answers', async () => {
+        let questionAnswers = await logic.getAnswers(questionId);
+        expect(questionAnswers).toContain(answerId);
+    });
 
-        test('adds answer to user\'s answers', async () => {
-            let userAnswers = await logic.getUserAnswers(username);
-            expect(userAnswers).toContain(answerId);
-        });
-    }
-);
+    test('adds answer to user\'s answers', async () => {
+        let userAnswers = await logic.getUserAnswers(username);
+        expect(userAnswers).toContain(answerId);
+    });
+});
