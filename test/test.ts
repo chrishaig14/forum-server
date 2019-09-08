@@ -63,7 +63,7 @@ describe('create question', () => {
 });
 
 describe('answer question ', () => {
-    let questionId;
+        let questionId;
         let answerId;
 
         let username = 'user';
@@ -75,9 +75,9 @@ describe('answer question ', () => {
             answerId = await logic.newAnswer(questionId, newAnswer);
         });
 
-    test('get answer returns same answer with question id', async () => {
+        test('get answer returns same answer with question id', async () => {
             let answer = await logic.getAnswer(answerId);
-        expect(answer).toMatchObject({...newAnswer, questionId});
+            expect(answer).toMatchObject({...newAnswer, questionId});
         });
 
         test('adds answer to question\'s answers', async () => {
