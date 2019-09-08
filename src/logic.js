@@ -132,8 +132,23 @@ exports.getUserQuestions = function (username) { return __awaiter(_this, void 0,
     });
 }); };
 exports.newAnswer = function (questionId, answer) { return __awaiter(_this, void 0, void 0, function () {
+    var value;
     return __generator(this, function (_a) {
-        return [2 /*return*/];
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, exports.db.collection('counters').findOne({ name: 'answerId' })];
+            case 1:
+                value = (_a.sent()).value;
+                return [4 /*yield*/, exports.db.collection('questions').insertOne(__assign({}, answer, { id: value }))];
+            case 2:
+                _a.sent();
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: answer.username }, { $push: { 'answers': value } })];
+            case 3:
+                _a.sent();
+                return [4 /*yield*/, exports.db.collection('counters').updateOne({ name: 'answerId' }, { $set: { 'value': value + 1 } })];
+            case 4:
+                _a.sent();
+                return [2 /*return*/, value];
+        }
     });
 }); };
 exports.createUser = function (user) { return __awaiter(_this, void 0, void 0, function () {

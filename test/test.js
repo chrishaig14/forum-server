@@ -46,6 +46,9 @@ beforeAll(function () { return __awaiter(_this, void 0, void 0, function () {
                 return [4 /*yield*/, logic.db.collection('counters').insertOne({ name: 'questionId', value: 0 })];
             case 2:
                 _a.sent();
+                return [4 /*yield*/, logic.db.collection('counters').insertOne({ name: 'answerId', value: 0 })];
+            case 3:
+                _a.sent();
                 return [2 /*return*/];
         }
     });

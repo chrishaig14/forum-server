@@ -50,6 +50,11 @@ export const getUserQuestions = async (username) => {
 };
 
 export const newAnswer = async (questionId, answer) => {
+    let {value} = await db.collection('counters').findOne({name: 'answerId'});
+    await db.collection('questions').insertOne({...answer, id: value});
+    await db.collection('users').updateOne({username: answer.username}, {$push: {'answers': value}});
+    await db.collection('counters').updateOne({name: 'answerId'}, {$set: {'value': value + 1}});
+    return value;
 };
 
 export const createUser = async (user) => {

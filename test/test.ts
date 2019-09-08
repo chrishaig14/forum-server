@@ -6,6 +6,8 @@ const dbName = 'forum_test';
 beforeAll(async () => {
     await logic.connectToDb(url, dbName);
     await logic.db.collection('counters').insertOne({name: 'questionId', value: 0});
+    await logic.db.collection('counters').insertOne({name: 'answerId', value: 0});
+
 });
 
 afterAll(async () => {
