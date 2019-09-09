@@ -155,6 +155,7 @@ exports.getUserQuestions = function (username) { return __awaiter(_this, void 0,
             case 0: return [4 /*yield*/, exports.db.collection('users').findOne({ username: username }, { projection: { questions: 1, _id: 0 } })];
             case 1:
                 questions = (_a.sent()).questions;
+                console.log('LLL: ', questions);
                 return [2 /*return*/, questions];
         }
     });

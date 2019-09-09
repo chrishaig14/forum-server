@@ -25,7 +25,7 @@ app.post('/login', async (request, response) => {
 
 app.post('/questions', async (request, response) => {
     const newQuestion = request.body.payload;
-    let questionId = await logic.newQuestion(newQuestion);
+    let questionId = await logic.newQuestion({...newQuestion, username: request.body.token});
     response.status(200).json({questionId}).end();
 });
 
@@ -34,6 +34,17 @@ app.get('/questions/:id', async (request, response) => {
     let question = await logic.getQuestion(id);
     if (question) {
         response.status(200).json({question}).end();
+    } else {
+        response.status(404).end();
+    }
+});
+
+app.get('/users/:id/questions', async (request, response) => {
+    const id = request.params.id;
+    let questions = await logic.getUserQuestions(id);
+    console.log('QUESTIONS: ', questions);
+    if (questions) {
+        response.status(200).json({questions}).end();
     } else {
         response.status(404).end();
     }

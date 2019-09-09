@@ -55,6 +55,7 @@ export const getQuestion = async (questionId: string): Promise<any> => {
 
 export const getUserQuestions = async (username: string): Promise<any[]> => {
     let {questions} = await db.collection('users').findOne({username}, {projection: {questions: 1, _id: 0}});
+    console.log('LLL: ', questions);
     return questions;
 };
 

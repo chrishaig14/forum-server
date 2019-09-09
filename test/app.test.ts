@@ -79,8 +79,17 @@ describe('create question', () => {
             .send({token: username})
             .expect(200, done)
             .expect(response => {
-                console.log('RESPONSE_body: ', response.body);
                 expect(response.body).toMatchObject({question: {...newQuestion, id: questionId}});
             }, done);
+    });
+
+    test('get user\'s questions contains new question id', async done => {
+        request(app)
+            .get('/users/' + username + '/questions')
+            .expect(200, done)
+            .expect(response => {
+                expect(response.body).toHaveProperty('questions');
+                expect(response.body.questions).toContain(questionId);
+            });
     });
 });

@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -77,7 +88,7 @@ app.post('/questions', function (request, response) { return __awaiter(_this, vo
         switch (_a.label) {
             case 0:
                 newQuestion = request.body.payload;
-                return [4 /*yield*/, logic.newQuestion(newQuestion)];
+                return [4 /*yield*/, logic.newQuestion(__assign({}, newQuestion, { username: request.body.token }))];
             case 1:
                 questionId = _a.sent();
                 response.status(200).json({ questionId: questionId }).end();
@@ -96,6 +107,26 @@ app.get('/questions/:id', function (request, response) { return __awaiter(_this,
                 question = _a.sent();
                 if (question) {
                     response.status(200).json({ question: question }).end();
+                }
+                else {
+                    response.status(404).end();
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
+app.get('/users/:id/questions', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var id, questions;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = request.params.id;
+                return [4 /*yield*/, logic.getUserQuestions(id)];
+            case 1:
+                questions = _a.sent();
+                console.log('QUESTIONS: ', questions);
+                if (questions) {
+                    response.status(200).json({ questions: questions }).end();
                 }
                 else {
                     response.status(404).end();
