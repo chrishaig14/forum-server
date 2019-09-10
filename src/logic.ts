@@ -24,8 +24,8 @@ export async function closeConnectionToDb() {
     await dbClient.close();
 }
 
-export const getAnswer = async (answerId: number): Promise<any> => {
-    let answer: any = await db.collection('answers').findOne({id: answerId});
+export const getAnswer = async (answerId: string): Promise<any> => {
+    let answer = await db.collection('answers').findOne({id: answerId});
     return answer;
 };
 
@@ -55,7 +55,6 @@ export const getQuestion = async (questionId: string): Promise<any> => {
 
 export const getUserQuestions = async (username: string): Promise<any[]> => {
     let {questions} = await db.collection('users').findOne({username}, {projection: {questions: 1, _id: 0}});
-    console.log('LLL: ', questions);
     return questions;
 };
 

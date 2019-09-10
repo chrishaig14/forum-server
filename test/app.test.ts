@@ -25,7 +25,7 @@ describe('create user', () => {
     test('new user returns 204', done => {
         request(app)
             .post('/users')
-            .send({username, password})
+            .send({user: {username, password}})
             .expect(204)
             .end(done);
     });
@@ -33,24 +33,24 @@ describe('create user', () => {
     test('login created user returns 200 with token in body', done => {
         request(app)
             .post('/login')
-            .send({username, password})
+            .send({user: {username, password}})
             .expect(200, done)
             .expect(response => {
-                expect(response.body).toHaveProperty('token');
+                expect(response.headers).toHaveProperty('authorization');
             }, done);
     });
 
     test('login with wrong password returns 401', done => {
         request(app)
             .post('/login')
-            .send({username, password: '2345'})
+            .send({user: {username, password: '2345'}})
             .expect(401, done);
     });
 
     test('login inexistent user returns 401', done => {
         request(app)
             .post('/login')
-            .send({username: 'joe', password: '5678'})
+            .send({user: {username: 'joe', password: '5678'}})
             .expect(401, done);
     });
 });
@@ -60,11 +60,13 @@ describe('create question', () => {
     let username = 'user';
     let newQuestion = {title: 'Question title', body: 'Question body'};
     let questionId;
+    let token = username;
 
     test('returns question id', async (done) => {
         request(app)
             .post('/questions')
-            .send({token: username, payload: newQuestion})
+            .send({question: newQuestion})
+            .set('Authorization', token)
             .expect(200, done)
             .expect(response => {
                 expect(response.body).toHaveProperty('questionId');
@@ -76,7 +78,6 @@ describe('create question', () => {
     test('get question returns same question', async (done) => {
         request(app)
             .get('/questions/' + questionId)
-            .send({token: username})
             .expect(200, done)
             .expect(response => {
                 expect(response.body).toMatchObject({question: {...newQuestion, id: questionId}});
@@ -91,5 +92,48 @@ describe('create question', () => {
                 expect(response.body).toHaveProperty('questions');
                 expect(response.body.questions).toContain(questionId);
             });
+    });
+});
+
+describe('answer question ', () => {
+    let questionId;
+    let answerId;
+
+    let username = 'user';
+    let token = username;
+    let newAnswer = {body: 'Answer body'};
+
+    let newQuestion = {title: 'Question title', body: 'Question body'};
+
+    beforeAll(async (done) => {
+        request(app)
+            .post('/questions')
+            .send({question: newQuestion})
+            .set('Authorization', token)
+            .then(response => {
+                    questionId = response.body.questionId;
+                    done();
+                }
+            );
+    });
+
+    test('post answer returns answer id', async done => {
+        request(app)
+            .post('/questions/' + questionId + '/answers')
+            .send({answer: newAnswer})
+            .set('Authorization', token)
+            .expect(200, done)
+            .expect(response => {
+                expect(response.body).toHaveProperty('answerId');
+                answerId = response.body.answerId;
+            }, done);
+    });
+    test('get answer returns correct answer', async done => {
+        request(app)
+            .get('/answers/' + answerId)
+            .expect(200, done)
+            .expect(response => {
+                expect(response.body).toMatchObject({answer: {...newAnswer, questionId}});
+            }, done);
     });
 });

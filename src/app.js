@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -55,7 +55,7 @@ app.use(express_1.json());
 app.post('/users', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, logic.createUser(request.body)];
+            case 0: return [4 /*yield*/, logic.createUser(request.body.user)];
             case 1:
                 _a.sent();
                 response.status(204).end();
@@ -64,16 +64,17 @@ app.post('/users', function (request, response) { return __awaiter(_this, void 0
     });
 }); });
 app.post('/login', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
-    var _a, username, password, result;
+    var _a, username, password, result, token;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = request.body, username = _a.username, password = _a.password;
+                _a = request.body.user, username = _a.username, password = _a.password;
                 return [4 /*yield*/, logic.match(username, password)];
             case 1:
                 result = _b.sent();
+                token = username;
                 if (result) {
-                    response.status(200).json({ token: username }).end();
+                    response.status(200).set('Authorization', token).end();
                 }
                 else {
                     response.status(401).end();
@@ -87,8 +88,8 @@ app.post('/questions', function (request, response) { return __awaiter(_this, vo
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                newQuestion = request.body.payload;
-                return [4 /*yield*/, logic.newQuestion(__assign({}, newQuestion, { username: request.body.token }))];
+                newQuestion = request.body.question;
+                return [4 /*yield*/, logic.newQuestion(__assign({}, newQuestion, { username: request.headers['authorization'] }))];
             case 1:
                 questionId = _a.sent();
                 response.status(200).json({ questionId: questionId }).end();
@@ -115,6 +116,25 @@ app.get('/questions/:id', function (request, response) { return __awaiter(_this,
         }
     });
 }); });
+app.post('/questions/:id/answers', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var id, answerId;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = request.params.id;
+                return [4 /*yield*/, logic.newAnswer(id, __assign({}, request.body.answer, { username: request.headers['authorization'] }))];
+            case 1:
+                answerId = _a.sent();
+                if (answerId) {
+                    response.status(200).json({ answerId: answerId }).end();
+                }
+                else {
+                    response.status(404).end();
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
 app.get('/users/:id/questions', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
     var id, questions;
     return __generator(this, function (_a) {
@@ -124,9 +144,27 @@ app.get('/users/:id/questions', function (request, response) { return __awaiter(
                 return [4 /*yield*/, logic.getUserQuestions(id)];
             case 1:
                 questions = _a.sent();
-                console.log('QUESTIONS: ', questions);
                 if (questions) {
                     response.status(200).json({ questions: questions }).end();
+                }
+                else {
+                    response.status(404).end();
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
+app.get('/answers/:id', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var id, answer;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = request.params.id;
+                return [4 /*yield*/, logic.getAnswer(id)];
+            case 1:
+                answer = _a.sent();
+                if (answer) {
+                    response.status(200).json({ answer: answer }).end();
                 }
                 else {
                     response.status(404).end();
