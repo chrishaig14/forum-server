@@ -62,6 +62,16 @@ app.get('/users/:id/questions', async (request, response) => {
     }
 });
 
+app.get('/users/:id/answers', async (request, response) => {
+    const id = request.params.id;
+    let answers = await logic.getUserAnswers(id);
+    if (answers) {
+        response.status(200).json({answers}).end();
+    } else {
+        response.status(404).end();
+    }
+});
+
 app.get('/answers/:id', async (request, response) => {
     const id = request.params.id;
     let answer = await logic.getAnswer(id);

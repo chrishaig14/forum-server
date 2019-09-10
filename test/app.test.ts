@@ -136,4 +136,14 @@ describe('answer question ', () => {
                 expect(response.body).toMatchObject({answer: {...newAnswer, questionId}});
             }, done);
     });
+    test('get user\'s answers contains new answer id', async done => {
+        request(app)
+            .get('/users/' + username + '/answers')
+            .expect(200, done)
+            .expect(response => {
+                expect(response.body).toHaveProperty('answers');
+                expect(response.body.answers).toContain(answerId);
+            });
+    });
+
 });
