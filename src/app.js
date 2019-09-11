@@ -135,6 +135,25 @@ app.post('/questions/:id/answers', function (request, response) { return __await
         }
     });
 }); });
+app.get('/questions/:id/answers', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var id, answers;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = request.params.id;
+                return [4 /*yield*/, logic.getAnswers(id)];
+            case 1:
+                answers = _a.sent();
+                if (answers) {
+                    response.status(200).json({ answers: answers }).end();
+                }
+                else {
+                    response.status(404).end();
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
 app.get('/users/:id/questions', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
     var id, questions;
     return __generator(this, function (_a) {

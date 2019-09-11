@@ -128,6 +128,16 @@ describe('answer question ', () => {
                 answerId = response.body.answerId;
             }, done);
     });
+
+    test('get question\'s answers contains answer id', async done => {
+        request(app)
+            .get('/questions/' + questionId + '/answers')
+            .expect(200, done)
+            .expect(response => {
+                expect(response.body.answers).toContain(answerId);
+            }, done);
+    });
+
     test('get answer returns correct answer', async done => {
         request(app)
             .get('/answers/' + answerId)
