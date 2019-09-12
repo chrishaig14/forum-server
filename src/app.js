@@ -90,15 +90,28 @@ app.post('/login', function (request, response) { return __awaiter(_this, void 0
     });
 }); });
 app.post('/questions', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
-    var newQuestion, questionId;
+    var newQuestion, question, questionId;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 newQuestion = request.body.question;
-                return [4 /*yield*/, logic.newQuestion(__assign({}, newQuestion, { username: request.headers['authorization'] }))];
+                question = __assign({}, newQuestion, { username: request.headers['authorization'] });
+                return [4 /*yield*/, logic.newQuestion(question)];
             case 1:
                 questionId = _a.sent();
                 response.status(200).json({ questionId: questionId }).end();
+                return [2 /*return*/];
+        }
+    });
+}); });
+app.get('/questions', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var questions;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, logic.getAllQuestions()];
+            case 1:
+                questions = _a.sent();
+                response.status(200).json({ questions: questions }).end();
                 return [2 /*return*/];
         }
     });

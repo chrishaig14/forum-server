@@ -29,6 +29,12 @@ export const getAnswer = async (answerId: string): Promise<any> => {
     return answer;
 };
 
+export const getAllQuestions = async (): Promise<any[]> => {
+    let questions = await db.collection('questions').find({}, {projection: {_id: 0}});
+    questions = await questions.toArray();
+    return questions;
+};
+
 export const getUserAnswers = async (username: string): Promise<any[]> => {
     let {answers} = await db.collection('users').findOne({username}, {projection: {answers: 1, _id: 0}});
     return answers;

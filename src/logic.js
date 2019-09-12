@@ -94,6 +94,20 @@ exports.getAnswer = function (answerId) { return __awaiter(_this, void 0, void 0
         }
     });
 }); };
+exports.getAllQuestions = function () { return __awaiter(_this, void 0, void 0, function () {
+    var questions;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, exports.db.collection('questions').find({}, { projection: { _id: 0 } })];
+            case 1:
+                questions = _a.sent();
+                return [4 /*yield*/, questions.toArray()];
+            case 2:
+                questions = _a.sent();
+                return [2 /*return*/, questions];
+        }
+    });
+}); };
 exports.getUserAnswers = function (username) { return __awaiter(_this, void 0, void 0, function () {
     var answers;
     return __generator(this, function (_a) {

@@ -36,9 +36,16 @@ app.post('/login', async (request, response) => {
 
 app.post('/questions', async (request, response) => {
     const newQuestion = request.body.question;
-    let questionId = await logic.newQuestion({...newQuestion, username: request.headers['authorization']});
+    let question = {...newQuestion, username: request.headers['authorization']};
+    let questionId = await logic.newQuestion(question);
     response.status(200).json({questionId}).end();
 });
+
+app.get('/questions', async (request, response) => {
+    let questions = await logic.getAllQuestions();
+    response.status(200).json({questions}).end();
+});
+
 
 app.get('/questions/:id', async (request, response) => {
     const id = request.params.id;

@@ -9,6 +9,8 @@ interface Logic {
     newQuestion: (question: any) => Promise<string>
 
     getQuestion: (questionId: string) => Promise<any>
+    
+    getAllQuestions: () => Promise<any[]>
 
     getUserQuestions: (username: string) => Promise<any[]>
 
