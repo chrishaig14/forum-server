@@ -2,11 +2,14 @@
 
 import {json} from 'express';
 
+const cors = require('cors');
+
 let logic: Logic;
 
 const express = require('express');
 const app = express();
 
+app.use(cors());
 app.use(json());
 
 

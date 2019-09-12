@@ -7,7 +7,8 @@
     "@types/node": "^12.7.4",
     "@types/supertest": "^2.0.8",
     "express": "^4.17.1",
-    "mongodb": "^3.3.2"
+    "mongodb": "^3.3.2",
+    "cors": "latest"
   },
   "scripts": {
     "start": "node src/app.js",

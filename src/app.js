@@ -48,9 +48,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
+var cors = require('cors');
 var logic;
 var express = require('express');
 var app = express();
+app.use(cors());
 app.use(express_1.json());
 app.post('/users', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
     return __generator(this, function (_a) {
