@@ -9,7 +9,12 @@ let logic: Logic;
 const express = require('express');
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    exposedHeaders: ['Authorization', 'Content-Type']
+};
+
+app.use(cors(corsOptions));
 app.use(json());
 
 
@@ -23,7 +28,7 @@ app.post('/login', async (request, response) => {
     let result = await logic.match(username, password);
     let token = username;
     if (result) {
-        response.status(200).set('Authorization', token).end();
+        response.status(204).set('Authorization', token).end();
     } else {
         response.status(401).end();
     }

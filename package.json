@@ -11,7 +11,7 @@
     "cors": "latest"
   },
   "scripts": {
-    "start": "node src/app.js",
+    "start": "node src/main.js",
     "test": "jest"
   },
   "devDependencies": {

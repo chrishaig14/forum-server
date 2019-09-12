@@ -34,7 +34,7 @@ describe('create user', () => {
         request(app)
             .post('/login')
             .send({user: {username, password}})
-            .expect(200, done)
+            .expect(204, done)
             .expect(response => {
                 expect(response.headers).toHaveProperty('authorization');
             }, done);

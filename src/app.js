@@ -52,7 +52,11 @@ var cors = require('cors');
 var logic;
 var express = require('express');
 var app = express();
-app.use(cors());
+var corsOptions = {
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    exposedHeaders: ['Authorization', 'Content-Type']
+};
+app.use(cors(corsOptions));
 app.use(express_1.json());
 app.post('/users', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
     return __generator(this, function (_a) {
@@ -76,7 +80,7 @@ app.post('/login', function (request, response) { return __awaiter(_this, void 0
                 result = _b.sent();
                 token = username;
                 if (result) {
-                    response.status(200).set('Authorization', token).end();
+                    response.status(204).set('Authorization', token).end();
                 }
                 else {
                     response.status(401).end();
