@@ -155,5 +155,34 @@ describe('answer question ', () => {
                 expect(response.body.answers).toContain(answerId);
             });
     });
+    test('like answer', async done => {
+        request(app)
+            .put('/answers/' + answerId + '/likes')
+            .set('Authorization', token)
 
+            .expect(204, done)
+            .expect(response => {
+                request(app)
+                    .get('/answers/' + answerId)
+                    .expect(200, done)
+                    .expect(response => {
+                        expect(response.body.answer.likes).toContain(username);
+                    });
+            });
+    });
+    test('unlike answer', async done => {
+        request(app)
+            .delete('/answers/' + answerId + '/likes')
+            .set('Authorization', token)
+            .expect(204, done)
+            .expect(response => {
+                request(app)
+                    .get('/answers/' + answerId)
+                    .expect(200, done)
+                    .expect(response => {
+                        console.log('response.body: ', response.body);
+                        expect(response.body.answer.likes).not.toContain(username);
+                    });
+            });
+    });
 });

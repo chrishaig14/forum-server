@@ -1,3 +1,5 @@
+import {db} from './logic';
+
 interface Logic {
 
     getAnswer: (answerId: string) => Promise<any>
@@ -9,8 +11,12 @@ interface Logic {
     newQuestion: (question: any) => Promise<string>
 
     getQuestion: (questionId: string) => Promise<any>
-    
+
     getAllQuestions: () => Promise<any[]>
+
+    likeAnswer: (answerId: string, username: string) => Promise<void>;
+
+    unlikeAnswer: (answerId: string, username: string) => Promise<void>;
 
     getUserQuestions: (username: string) => Promise<any[]>
 
