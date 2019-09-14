@@ -121,6 +121,20 @@ app.delete('/answers/:id/likes', async (request, response) => {
     response.status(204).end();
 });
 
+app.put('/questions/:id/likes', async (request, response) => {
+    const id = request.params.id;
+    let username = request.headers['authorization'];
+    await logic.likeQuestion(id, username);
+    response.status(204).end();
+});
+
+app.delete('/questions/:id/likes', async (request, response) => {
+    const id = request.params.id;
+    let username = request.headers['authorization'];
+    await logic.unlikeQuestion(id, username);
+    response.status(204).end();
+});
+
 
 module.exports = {
     app: app.listen(8000), setLogic: (l: Logic) => {

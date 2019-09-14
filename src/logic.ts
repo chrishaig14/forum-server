@@ -48,7 +48,7 @@ export const getAnswers = async (questionId: number): Promise<any[]> => {
 export const newQuestion = async (question: any): Promise<string> => {
     let {value} = await db.collection('counters').findOne({name: 'questionId'});
     const questionId = value.toString();
-    await db.collection('questions').insertOne({...question, id: questionId, answers: [], upvotes: 0, downvotes: 0});
+    await db.collection('questions').insertOne({...question, id: questionId, answers: [], likes: []});
     await db.collection('users').updateOne({username: question.username}, {$push: {'questions': questionId}});
     await db.collection('counters').updateOne({name: 'questionId'}, {$set: {'value': value + 1}});
     return questionId;
@@ -80,6 +80,14 @@ export const likeAnswer = async (answerId: string, username: string): Promise<vo
 
 export const unlikeAnswer = async (answerId: string, username: string): Promise<void> => {
     await db.collection('answers').updateOne({id: answerId}, {$pull: {likes: username}});
+};
+
+export const likeQuestion = async (questionId: string, username: string): Promise<void> => {
+    await db.collection('questions').updateOne({id: questionId}, {$addToSet: {likes: username}});
+};
+
+export const unlikeQuestion = async (questionId: string, username: string): Promise<void> => {
+    await db.collection('questions').updateOne({id: questionId}, {$pull: {likes: username}});
 };
 
 export const createUser = async (user: any): Promise<void> => {

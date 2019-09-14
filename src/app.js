@@ -260,6 +260,36 @@ app.delete('/answers/:id/likes', function (request, response) { return __awaiter
         }
     });
 }); });
+app.put('/questions/:id/likes', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var id, username;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = request.params.id;
+                username = request.headers['authorization'];
+                return [4 /*yield*/, logic.likeQuestion(id, username)];
+            case 1:
+                _a.sent();
+                response.status(204).end();
+                return [2 /*return*/];
+        }
+    });
+}); });
+app.delete('/questions/:id/likes', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var id, username;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = request.params.id;
+                username = request.headers['authorization'];
+                return [4 /*yield*/, logic.unlikeQuestion(id, username)];
+            case 1:
+                _a.sent();
+                response.status(204).end();
+                return [2 /*return*/];
+        }
+    });
+}); });
 module.exports = {
     app: app.listen(8000), setLogic: function (l) {
         logic = l;
