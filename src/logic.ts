@@ -48,7 +48,7 @@ export const getAnswers = async (questionId: number): Promise<any[]> => {
 export const newQuestion = async (question: any): Promise<string> => {
     let {value} = await db.collection('counters').findOne({name: 'questionId'});
     const questionId = value.toString();
-    await db.collection('questions').insertOne({...question, id: questionId, answers: []});
+    await db.collection('questions').insertOne({...question, id: questionId, answers: [], tags: []});
     await db.collection('users').updateOne({username: question.username}, {$push: {'questions': questionId}});
     await db.collection('counters').updateOne({name: 'questionId'}, {$set: {'value': value + 1}});
     return questionId;

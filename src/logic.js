@@ -138,7 +138,7 @@ exports.newQuestion = function (question) { return __awaiter(_this, void 0, void
             case 1:
                 value = (_a.sent()).value;
                 questionId = value.toString();
-                return [4 /*yield*/, exports.db.collection('questions').insertOne(__assign({}, question, { id: questionId, answers: [] }))];
+                return [4 /*yield*/, exports.db.collection('questions').insertOne(__assign({}, question, { id: questionId, answers: [], tags: [] }))];
             case 2:
                 _a.sent();
                 return [4 /*yield*/, exports.db.collection('users').updateOne({ username: question.username }, { $push: { 'questions': questionId } })];
