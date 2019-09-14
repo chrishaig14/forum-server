@@ -181,7 +181,7 @@ exports.newAnswer = function (questionId, answer) { return __awaiter(_this, void
             case 1:
                 value = (_a.sent()).value;
                 answerId = value.toString();
-                return [4 /*yield*/, exports.db.collection('answers').insertOne(__assign({}, answer, { id: answerId, questionId: questionId }))];
+                return [4 /*yield*/, exports.db.collection('answers').insertOne(__assign({}, answer, { id: answerId, questionId: questionId, upvotes: 0, downvotes: 0 }))];
             case 2:
                 _a.sent();
                 return [4 /*yield*/, exports.db.collection('questions').updateOne({ id: questionId }, { $push: { 'answers': answerId } })];
