@@ -259,18 +259,25 @@ exports.match = function (username, password) { return __awaiter(_this, void 0, 
     });
 }); };
 exports.search = function (query) { return __awaiter(_this, void 0, void 0, function () {
-    var terms, result;
+    var terms, tags, searchObj, result;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 terms = query.terms;
-                return [4 /*yield*/, exports.db.collection('questions').find({ $text: { $search: terms } })];
+                tags = query.tags;
+                searchObj = [];
+                if (terms) {
+                    searchObj.push({ $text: { $search: terms } });
+                }
+                if (tags) {
+                    searchObj.push({ tags: { $in: [tags] } });
+                }
+                return [4 /*yield*/, exports.db.collection('questions').find({ $or: searchObj })];
             case 1:
                 result = _a.sent();
                 return [4 /*yield*/, result.toArray()];
             case 2:
                 result = _a.sent();
-                console.log('SEARCHED FOR: ', query, 'GAVE: ', result);
                 return [2 /*return*/, result];
         }
     });

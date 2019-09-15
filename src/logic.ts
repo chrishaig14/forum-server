@@ -101,8 +101,15 @@ export const match = async (username: string, password: string): Promise<any> =>
 
 export const search = async (query: any): Promise<any[]> => {
     let terms = query.terms;
-    let result = await db.collection('questions').find({$text: {$search: terms}});
+    let tags = query.tags;
+    let searchObj = [];
+    if (terms) {
+        searchObj.push({$text: {$search: terms}});
+    }
+    if (tags) {
+        searchObj.push({tags: {$in: [tags]}});
+    }
+    let result = await db.collection('questions').find({$or: searchObj});
     result = await result.toArray();
-    console.log('SEARCHED FOR: ', query, 'GAVE: ', result);
     return result;
 };
