@@ -135,6 +135,11 @@ app.delete('/questions/:id/likes', async (request, response) => {
     response.status(204).end();
 });
 
+app.get('/search', async (request, response) => {
+    let q = request.query;
+    let results = await logic.search(q);
+    response.status(200).json(results).end();
+});
 
 module.exports = {
     app: app.listen(8000), setLogic: (l: Logic) => {

@@ -99,3 +99,10 @@ export const match = async (username: string, password: string): Promise<any> =>
     return result;
 };
 
+export const search = async (query: any): Promise<any[]> => {
+    let terms = query.terms;
+    let result = await db.collection('questions').find({$text: {$search: terms}});
+    result = await result.toArray();
+    console.log('SEARCHED FOR: ', query, 'GAVE: ', result);
+    return result;
+};

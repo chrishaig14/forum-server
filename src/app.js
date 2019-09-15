@@ -290,6 +290,20 @@ app.delete('/questions/:id/likes', function (request, response) { return __await
         }
     });
 }); });
+app.get('/search', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var q, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                q = request.query;
+                return [4 /*yield*/, logic.search(q)];
+            case 1:
+                results = _a.sent();
+                response.status(200).json(results).end();
+                return [2 /*return*/];
+        }
+    });
+}); });
 module.exports = {
     app: app.listen(8000), setLogic: function (l) {
         logic = l;

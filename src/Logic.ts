@@ -14,6 +14,8 @@ interface Logic {
 
     getAllQuestions: () => Promise<any[]>
 
+    search: (query: any) => Promise<any[]>
+
     likeAnswer: (answerId: string, username: string) => Promise<void>;
 
     unlikeAnswer: (answerId: string, username: string) => Promise<void>;
