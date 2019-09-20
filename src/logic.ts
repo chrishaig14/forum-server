@@ -99,6 +99,15 @@ export const match = async (username: string, password: string): Promise<any> =>
     return result;
 };
 
+export const getUserProfile = async (username: string): Promise<any> => {
+    let user = await db.collection('users').findOne({username}, {projection: {_id: 0, password: 0}});
+    console.log('GOT USER PROFILE: ', user);
+    let q = await db.collection('questions').find({username});
+    q = await q.toArray();
+    user.questions = q;
+    return user;
+};
+
 export const search = async (query: any): Promise<any[]> => {
     let terms = query.terms;
     let tags = query.tags;

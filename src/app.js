@@ -211,6 +211,25 @@ app.get('/users/:id/answers', function (request, response) { return __awaiter(_t
         }
     });
 }); });
+app.get('/users/:id', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var id, user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = request.params.id;
+                return [4 /*yield*/, logic.getUserProfile(id)];
+            case 1:
+                user = _a.sent();
+                if (user) {
+                    response.status(200).json({ user: user }).end();
+                }
+                else {
+                    response.status(404).end();
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
 app.get('/answers/:id', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
     var id, answer;
     return __generator(this, function (_a) {

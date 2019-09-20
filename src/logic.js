@@ -258,6 +258,25 @@ exports.match = function (username, password) { return __awaiter(_this, void 0, 
         }
     });
 }); };
+exports.getUserProfile = function (username) { return __awaiter(_this, void 0, void 0, function () {
+    var user, q;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, exports.db.collection('users').findOne({ username: username }, { projection: { _id: 0, password: 0 } })];
+            case 1:
+                user = _a.sent();
+                console.log('GOT USER PROFILE: ', user);
+                return [4 /*yield*/, exports.db.collection('questions').find({ username: username })];
+            case 2:
+                q = _a.sent();
+                return [4 /*yield*/, q.toArray()];
+            case 3:
+                q = _a.sent();
+                user.questions = q;
+                return [2 /*return*/, user];
+        }
+    });
+}); };
 exports.search = function (query) { return __awaiter(_this, void 0, void 0, function () {
     var terms, tags, searchObj, result;
     return __generator(this, function (_a) {
