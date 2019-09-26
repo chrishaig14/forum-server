@@ -153,7 +153,7 @@ app.get('/search', async (request, response) => {
 });
 
 module.exports = {
-    app: app.listen(8000), setLogic: (l: Logic) => {
+    app: app.listen(process.env.PORT || 8080), setLogic: (l: Logic) => {
         logic = l;
     }
 };
