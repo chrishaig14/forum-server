@@ -11,10 +11,11 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -45,7 +46,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var cors = require('cors');
@@ -58,7 +58,7 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express_1.json());
-app.post('/users', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.post('/users', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, logic.createUser(request.body.user)];
@@ -69,7 +69,7 @@ app.post('/users', function (request, response) { return __awaiter(_this, void 0
         }
     });
 }); });
-app.post('/login', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.post('/login', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, username, password, result, token;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -89,13 +89,13 @@ app.post('/login', function (request, response) { return __awaiter(_this, void 0
         }
     });
 }); });
-app.post('/questions', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.post('/questions', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var newQuestion, question, questionId;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 newQuestion = request.body.question;
-                question = __assign({}, newQuestion, { username: request.headers['authorization'] });
+                question = __assign(__assign({}, newQuestion), { username: request.headers['authorization'] });
                 return [4 /*yield*/, logic.newQuestion(question)];
             case 1:
                 questionId = _a.sent();
@@ -104,7 +104,7 @@ app.post('/questions', function (request, response) { return __awaiter(_this, vo
         }
     });
 }); });
-app.get('/questions', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.get('/questions', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var questions;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -116,7 +116,7 @@ app.get('/questions', function (request, response) { return __awaiter(_this, voi
         }
     });
 }); });
-app.get('/questions/:id', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.get('/questions/:id', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var id, question;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -135,13 +135,13 @@ app.get('/questions/:id', function (request, response) { return __awaiter(_this,
         }
     });
 }); });
-app.post('/questions/:id/answers', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.post('/questions/:id/answers', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var id, answerId;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = request.params.id;
-                return [4 /*yield*/, logic.newAnswer(id, __assign({}, request.body.answer, { username: request.headers['authorization'] }))];
+                return [4 /*yield*/, logic.newAnswer(id, __assign(__assign({}, request.body.answer), { username: request.headers['authorization'] }))];
             case 1:
                 answerId = _a.sent();
                 if (answerId) {
@@ -154,7 +154,7 @@ app.post('/questions/:id/answers', function (request, response) { return __await
         }
     });
 }); });
-app.get('/questions/:id/answers', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.get('/questions/:id/answers', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var id, answers;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -173,7 +173,7 @@ app.get('/questions/:id/answers', function (request, response) { return __awaite
         }
     });
 }); });
-app.get('/users/:id/questions', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.get('/users/:id/questions', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var id, questions;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -192,7 +192,7 @@ app.get('/users/:id/questions', function (request, response) { return __awaiter(
         }
     });
 }); });
-app.get('/users/:id/answers', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.get('/users/:id/answers', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var id, answers;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -211,7 +211,7 @@ app.get('/users/:id/answers', function (request, response) { return __awaiter(_t
         }
     });
 }); });
-app.get('/users/:id', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.get('/users/:id', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var id, user;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -231,7 +231,7 @@ app.get('/users/:id', function (request, response) { return __awaiter(_this, voi
         }
     });
 }); });
-app.get('/answers/:id', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.get('/answers/:id', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var id, answer;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -250,7 +250,7 @@ app.get('/answers/:id', function (request, response) { return __awaiter(_this, v
         }
     });
 }); });
-app.put('/answers/:id/likes', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.put('/answers/:id/likes', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var id, username;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -265,7 +265,7 @@ app.put('/answers/:id/likes', function (request, response) { return __awaiter(_t
         }
     });
 }); });
-app.delete('/answers/:id/likes', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.delete('/answers/:id/likes', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var id, username;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -280,7 +280,7 @@ app.delete('/answers/:id/likes', function (request, response) { return __awaiter
         }
     });
 }); });
-app.put('/questions/:id/likes', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.put('/questions/:id/likes', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var id, username;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -295,7 +295,7 @@ app.put('/questions/:id/likes', function (request, response) { return __awaiter(
         }
     });
 }); });
-app.delete('/questions/:id/likes', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.delete('/questions/:id/likes', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var id, username;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -310,7 +310,7 @@ app.delete('/questions/:id/likes', function (request, response) { return __await
         }
     });
 }); });
-app.get('/search', function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+app.get('/search', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var q, results;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -325,7 +325,7 @@ app.get('/search', function (request, response) { return __awaiter(_this, void 0
     });
 }); });
 module.exports = {
-    app: app.listen(8000), setLogic: function (l) {
+    app: app.listen(process.env.PORT || 8080), setLogic: function (l) {
         logic = l;
     }
 };
