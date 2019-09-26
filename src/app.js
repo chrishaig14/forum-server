@@ -220,6 +220,7 @@ app.get('/users/:id', function (request, response) { return __awaiter(_this, voi
                 return [4 /*yield*/, logic.getUserProfile(id)];
             case 1:
                 user = _a.sent();
+                console.log('USER PROFILE: ', user);
                 if (user) {
                     response.status(200).json({ user: user }).end();
                 }

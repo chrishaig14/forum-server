@@ -100,6 +100,7 @@ app.get('/users/:id/answers', async (request, response) => {
 app.get('/users/:id', async (request, response) => {
     const id = request.params.id;
     let user = await logic.getUserProfile(id);
+    console.log('USER PROFILE: ', user);
     if (user) {
         response.status(200).json({user}).end();
     } else {

@@ -87,23 +87,38 @@ export const newAnswer = async (questionId: string, answer: any): Promise<string
 };
 
 export const likeAnswer = async (answerId: string, username: string): Promise<void> => {
-    await db.collection('answers').updateOne({id: answerId}, {$addToSet: {likes: username}});
+    let a = await db.collection('answers').findOneAndUpdate({id: answerId}, {$addToSet: {likes: username}});
+    await db.collection('users').updateOne({username: username}, {$addToSet: {'starsGiven.answers': answerId}});
+    await db.collection('users').updateOne({username: a.value.username}, {$inc: {'starsReceived.answers': 1}});
 };
 
 export const unlikeAnswer = async (answerId: string, username: string): Promise<void> => {
-    await db.collection('answers').updateOne({id: answerId}, {$pull: {likes: username}});
+    let a = await db.collection('answers').findOneAndUpdate({id: answerId}, {$pull: {likes: username}});
+    await db.collection('users').updateOne({username: username}, {$pull: {'starsGiven.answers': answerId}});
+    await db.collection('users').updateOne({username: a.value.username}, {$inc: {'starsReceived.answers': -1}});
 };
 
 export const likeQuestion = async (questionId: string, username: string): Promise<void> => {
-    await db.collection('questions').updateOne({id: questionId}, {$addToSet: {likes: username}});
+    let q = await db.collection('questions').findOneAndUpdate({id: questionId}, {$addToSet: {likes: username}});
+    await db.collection('users').updateOne({username: username}, {$addToSet: {'starsGiven.questions': questionId}});
+    await db.collection('users').updateOne({username: q.value.username}, {$inc: {'starsReceived.questions': 1}});
 };
 
 export const unlikeQuestion = async (questionId: string, username: string): Promise<void> => {
-    await db.collection('questions').updateOne({id: questionId}, {$pull: {likes: username}});
+    let q = await db.collection('questions').findOneAndUpdate({id: questionId}, {$pull: {likes: username}});
+    await db.collection('users').updateOne({username: username}, {$pull: {'starsGiven.questions': questionId}});
+    await db.collection('users').updateOne({username: q.value.username}, {$inc: {'starsReceived.questions': -1}});
+
 };
 
 export const createUser = async (user: any): Promise<void> => {
-    await db.collection('users').insertOne({...user, questions: [], answers: []});
+    await db.collection('users').insertOne({
+        ...user,
+        questions: [],
+        answers: [],
+        starsGiven: {answers: [], questions: []},
+        starsReceived: {answers: 0, questions: 0}
+    });
 };
 
 export const match = async (username: string, password: string): Promise<any> => {

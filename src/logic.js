@@ -198,40 +198,68 @@ exports.newAnswer = function (questionId, answer) { return __awaiter(_this, void
     });
 }); };
 exports.likeAnswer = function (answerId, username) { return __awaiter(_this, void 0, void 0, function () {
+    var a;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, exports.db.collection('answers').updateOne({ id: answerId }, { $addToSet: { likes: username } })];
+            case 0: return [4 /*yield*/, exports.db.collection('answers').findOneAndUpdate({ id: answerId }, { $addToSet: { likes: username } })];
             case 1:
+                a = _a.sent();
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: username }, { $addToSet: { 'starsGiven.answers': answerId } })];
+            case 2:
+                _a.sent();
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: a.value.username }, { $inc: { 'starsReceived.answers': 1 } })];
+            case 3:
                 _a.sent();
                 return [2 /*return*/];
         }
     });
 }); };
 exports.unlikeAnswer = function (answerId, username) { return __awaiter(_this, void 0, void 0, function () {
+    var a;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, exports.db.collection('answers').updateOne({ id: answerId }, { $pull: { likes: username } })];
+            case 0: return [4 /*yield*/, exports.db.collection('answers').findOneAndUpdate({ id: answerId }, { $pull: { likes: username } })];
             case 1:
+                a = _a.sent();
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: username }, { $pull: { 'starsGiven.answers': answerId } })];
+            case 2:
+                _a.sent();
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: a.value.username }, { $inc: { 'starsReceived.answers': -1 } })];
+            case 3:
                 _a.sent();
                 return [2 /*return*/];
         }
     });
 }); };
 exports.likeQuestion = function (questionId, username) { return __awaiter(_this, void 0, void 0, function () {
+    var q;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, exports.db.collection('questions').updateOne({ id: questionId }, { $addToSet: { likes: username } })];
+            case 0: return [4 /*yield*/, exports.db.collection('questions').findOneAndUpdate({ id: questionId }, { $addToSet: { likes: username } })];
             case 1:
+                q = _a.sent();
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: username }, { $addToSet: { 'starsGiven.questions': questionId } })];
+            case 2:
+                _a.sent();
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: q.value.username }, { $inc: { 'starsReceived.questions': 1 } })];
+            case 3:
                 _a.sent();
                 return [2 /*return*/];
         }
     });
 }); };
 exports.unlikeQuestion = function (questionId, username) { return __awaiter(_this, void 0, void 0, function () {
+    var q;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, exports.db.collection('questions').updateOne({ id: questionId }, { $pull: { likes: username } })];
+            case 0: return [4 /*yield*/, exports.db.collection('questions').findOneAndUpdate({ id: questionId }, { $pull: { likes: username } })];
             case 1:
+                q = _a.sent();
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: username }, { $pull: { 'starsGiven.questions': questionId } })];
+            case 2:
+                _a.sent();
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: q.value.username }, { $inc: { 'starsReceived.questions': -1 } })];
+            case 3:
                 _a.sent();
                 return [2 /*return*/];
         }
@@ -240,7 +268,7 @@ exports.unlikeQuestion = function (questionId, username) { return __awaiter(_thi
 exports.createUser = function (user) { return __awaiter(_this, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, exports.db.collection('users').insertOne(__assign({}, user, { questions: [], answers: [] }))];
+            case 0: return [4 /*yield*/, exports.db.collection('users').insertOne(__assign({}, user, { questions: [], answers: [], starsGiven: { answers: [], questions: [] }, starsReceived: { answers: 0, questions: 0 } }))];
             case 1:
                 _a.sent();
                 return [2 /*return*/];
