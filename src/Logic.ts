@@ -12,6 +12,8 @@ interface Logic {
 
     getQuestion: (questionId: string) => Promise<any>
 
+    getAllUsers: () => Promise<string[]>
+
     getUserProfile: (username: string) => Promise<any>
 
     getAllQuestions: () => Promise<any[]>

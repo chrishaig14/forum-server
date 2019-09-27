@@ -11,11 +11,10 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -46,6 +45,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongodb_1 = require("mongodb");
 var dbClient;
@@ -83,7 +83,7 @@ function closeConnectionToDb() {
     });
 }
 exports.closeConnectionToDb = closeConnectionToDb;
-exports.getAnswer = function (answerId) { return __awaiter(void 0, void 0, void 0, function () {
+exports.getAnswer = function (answerId) { return __awaiter(_this, void 0, void 0, function () {
     var answer;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -94,7 +94,7 @@ exports.getAnswer = function (answerId) { return __awaiter(void 0, void 0, void 
         }
     });
 }); };
-exports.getAllQuestions = function () { return __awaiter(void 0, void 0, void 0, function () {
+exports.getAllQuestions = function () { return __awaiter(_this, void 0, void 0, function () {
     var questions;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -108,7 +108,22 @@ exports.getAllQuestions = function () { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); };
-exports.getUserAnswers = function (username) { return __awaiter(void 0, void 0, void 0, function () {
+exports.getAllUsers = function () { return __awaiter(_this, void 0, void 0, function () {
+    var users;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, exports.db.collection('users').find({}, { projection: { _id: 0, username: 1 } })];
+            case 1:
+                users = _a.sent();
+                return [4 /*yield*/, users.toArray()];
+            case 2:
+                users = _a.sent();
+                users = users.map(function (u) { return u.username; });
+                return [2 /*return*/, users];
+        }
+    });
+}); };
+exports.getUserAnswers = function (username) { return __awaiter(_this, void 0, void 0, function () {
     var answers;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -119,7 +134,7 @@ exports.getUserAnswers = function (username) { return __awaiter(void 0, void 0, 
         }
     });
 }); };
-exports.getAnswers = function (questionId) { return __awaiter(void 0, void 0, void 0, function () {
+exports.getAnswers = function (questionId) { return __awaiter(_this, void 0, void 0, function () {
     var answers;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -130,7 +145,7 @@ exports.getAnswers = function (questionId) { return __awaiter(void 0, void 0, vo
         }
     });
 }); };
-exports.newQuestion = function (question) { return __awaiter(void 0, void 0, void 0, function () {
+exports.newQuestion = function (question) { return __awaiter(_this, void 0, void 0, function () {
     var value, questionId;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -138,7 +153,7 @@ exports.newQuestion = function (question) { return __awaiter(void 0, void 0, voi
             case 1:
                 value = (_a.sent()).value;
                 questionId = value.toString();
-                return [4 /*yield*/, exports.db.collection('questions').insertOne(__assign(__assign({}, question), { id: questionId, answers: [], likes: [], timestamp: (new Date()).toISOString() }))];
+                return [4 /*yield*/, exports.db.collection('questions').insertOne(__assign({}, question, { id: questionId, answers: [], likes: [], timestamp: (new Date()).toISOString() }))];
             case 2:
                 _a.sent();
                 return [4 /*yield*/, exports.db.collection('users').updateOne({ username: question.username }, { $push: { 'questions': questionId } })];
@@ -151,7 +166,7 @@ exports.newQuestion = function (question) { return __awaiter(void 0, void 0, voi
         }
     });
 }); };
-exports.getQuestion = function (questionId) { return __awaiter(void 0, void 0, void 0, function () {
+exports.getQuestion = function (questionId) { return __awaiter(_this, void 0, void 0, function () {
     var question;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -162,7 +177,7 @@ exports.getQuestion = function (questionId) { return __awaiter(void 0, void 0, v
         }
     });
 }); };
-exports.getUserQuestions = function (username) { return __awaiter(void 0, void 0, void 0, function () {
+exports.getUserQuestions = function (username) { return __awaiter(_this, void 0, void 0, function () {
     var questions;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -173,7 +188,7 @@ exports.getUserQuestions = function (username) { return __awaiter(void 0, void 0
         }
     });
 }); };
-exports.newAnswer = function (questionId, answer) { return __awaiter(void 0, void 0, void 0, function () {
+exports.newAnswer = function (questionId, answer) { return __awaiter(_this, void 0, void 0, function () {
     var value, answerId;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -181,7 +196,7 @@ exports.newAnswer = function (questionId, answer) { return __awaiter(void 0, voi
             case 1:
                 value = (_a.sent()).value;
                 answerId = value.toString();
-                return [4 /*yield*/, exports.db.collection('answers').insertOne(__assign(__assign({}, answer), { id: answerId, questionId: questionId, likes: [], timestamp: (new Date()).toISOString() }))];
+                return [4 /*yield*/, exports.db.collection('answers').insertOne(__assign({}, answer, { id: answerId, questionId: questionId, likes: [], timestamp: (new Date()).toISOString() }))];
             case 2:
                 _a.sent();
                 return [4 /*yield*/, exports.db.collection('questions').updateOne({ id: questionId }, { $push: { 'answers': answerId } })];
@@ -197,24 +212,38 @@ exports.newAnswer = function (questionId, answer) { return __awaiter(void 0, voi
         }
     });
 }); };
-exports.likeAnswer = function (answerId, username) { return __awaiter(void 0, void 0, void 0, function () {
+exports.likeAnswer = function (answerId, username) { return __awaiter(_this, void 0, void 0, function () {
     var a;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, exports.db.collection('answers').findOneAndUpdate({ id: answerId }, { $addToSet: { likes: username } })];
             case 1:
                 a = _a.sent();
+                // let a = await db.collection('answers').findOne({id: answerId});
+                // console.log('############ ANSWER');
+                // console.log(a);
+                // console.log(answerId);
+                // console.log(username);
+                // console.log(a.value);
+                // console.log(a.value.username);
                 return [4 /*yield*/, exports.db.collection('users').updateOne({ username: username }, { $addToSet: { 'starsGiven.answers': answerId } })];
             case 2:
+                // let a = await db.collection('answers').findOne({id: answerId});
+                // console.log('############ ANSWER');
+                // console.log(a);
+                // console.log(answerId);
+                // console.log(username);
+                // console.log(a.value);
+                // console.log(a.value.username);
                 _a.sent();
-                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: a.value.username }, { $inc: { 'starsReceived.answers': 1 } })];
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: a.username }, { $inc: { 'starsReceived.answers': 1 } })];
             case 3:
                 _a.sent();
                 return [2 /*return*/];
         }
     });
 }); };
-exports.unlikeAnswer = function (answerId, username) { return __awaiter(void 0, void 0, void 0, function () {
+exports.unlikeAnswer = function (answerId, username) { return __awaiter(_this, void 0, void 0, function () {
     var a;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -224,14 +253,14 @@ exports.unlikeAnswer = function (answerId, username) { return __awaiter(void 0, 
                 return [4 /*yield*/, exports.db.collection('users').updateOne({ username: username }, { $pull: { 'starsGiven.answers': answerId } })];
             case 2:
                 _a.sent();
-                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: a.value.username }, { $inc: { 'starsReceived.answers': -1 } })];
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: a.username }, { $inc: { 'starsReceived.answers': -1 } })];
             case 3:
                 _a.sent();
                 return [2 /*return*/];
         }
     });
 }); };
-exports.likeQuestion = function (questionId, username) { return __awaiter(void 0, void 0, void 0, function () {
+exports.likeQuestion = function (questionId, username) { return __awaiter(_this, void 0, void 0, function () {
     var q;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -241,14 +270,14 @@ exports.likeQuestion = function (questionId, username) { return __awaiter(void 0
                 return [4 /*yield*/, exports.db.collection('users').updateOne({ username: username }, { $addToSet: { 'starsGiven.questions': questionId } })];
             case 2:
                 _a.sent();
-                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: q.value.username }, { $inc: { 'starsReceived.questions': 1 } })];
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: q.username }, { $inc: { 'starsReceived.questions': 1 } })];
             case 3:
                 _a.sent();
                 return [2 /*return*/];
         }
     });
 }); };
-exports.unlikeQuestion = function (questionId, username) { return __awaiter(void 0, void 0, void 0, function () {
+exports.unlikeQuestion = function (questionId, username) { return __awaiter(_this, void 0, void 0, function () {
     var q;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -258,24 +287,24 @@ exports.unlikeQuestion = function (questionId, username) { return __awaiter(void
                 return [4 /*yield*/, exports.db.collection('users').updateOne({ username: username }, { $pull: { 'starsGiven.questions': questionId } })];
             case 2:
                 _a.sent();
-                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: q.value.username }, { $inc: { 'starsReceived.questions': -1 } })];
+                return [4 /*yield*/, exports.db.collection('users').updateOne({ username: q.username }, { $inc: { 'starsReceived.questions': -1 } })];
             case 3:
                 _a.sent();
                 return [2 /*return*/];
         }
     });
 }); };
-exports.createUser = function (user) { return __awaiter(void 0, void 0, void 0, function () {
+exports.createUser = function (user) { return __awaiter(_this, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, exports.db.collection('users').insertOne(__assign(__assign({}, user), { questions: [], answers: [], starsGiven: { answers: [], questions: [] }, starsReceived: { answers: 0, questions: 0 } }))];
+            case 0: return [4 /*yield*/, exports.db.collection('users').insertOne(__assign({}, user, { questions: [], answers: [], starsGiven: { answers: [], questions: [] }, starsReceived: { answers: 0, questions: 0 } }))];
             case 1:
                 _a.sent();
                 return [2 /*return*/];
         }
     });
 }); };
-exports.match = function (username, password) { return __awaiter(void 0, void 0, void 0, function () {
+exports.match = function (username, password) { return __awaiter(_this, void 0, void 0, function () {
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -286,7 +315,7 @@ exports.match = function (username, password) { return __awaiter(void 0, void 0,
         }
     });
 }); };
-exports.getUserProfile = function (username) { return __awaiter(void 0, void 0, void 0, function () {
+exports.getUserProfile = function (username) { return __awaiter(_this, void 0, void 0, function () {
     var user, q;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -305,7 +334,7 @@ exports.getUserProfile = function (username) { return __awaiter(void 0, void 0, 
         }
     });
 }); };
-exports.search = function (query) { return __awaiter(void 0, void 0, void 0, function () {
+exports.search = function (query) { return __awaiter(_this, void 0, void 0, function () {
     var terms, tags, searchObj, result;
     return __generator(this, function (_a) {
         switch (_a.label) {
