@@ -1,1 +1,1 @@
-Server for Question & Answer app at: https://github.com/chrishaig14/forum-server
+Server for Question & Answer app at: https://github.com/chrishaig14/forum-client
